@@ -1,4 +1,4 @@
-module github.com/gagliardetto/metaplex-go
+module github.com/go-enols/metaplex-go
 
 go 1.16
 
