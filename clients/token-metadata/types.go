@@ -542,3 +542,126 @@ func (obj *MintNewEditionFromMasterEditionViaTokenArgs) UnmarshalWithDecoder(dec
 	}
 	return nil
 }
+type CreateMetadataAccountArgsV3 struct {
+	Data              DataV2
+	IsMutable         bool
+	CollectionDetails *CollectionDetails `bin:"optional"`
+}
+
+func (obj CreateMetadataAccountArgsV3) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `Data` param:
+	err = encoder.Encode(obj.Data)
+	if err != nil {
+		return err
+	}
+	// Serialize `IsMutable` param:
+	err = encoder.Encode(obj.IsMutable)
+	if err != nil {
+		return err
+	}
+	// Serialize `CollectionDetails` param (optional):
+	{
+		if obj.CollectionDetails == nil {
+			err = encoder.WriteBool(false)
+			if err != nil {
+				return err
+			}
+		} else {
+			err = encoder.WriteBool(true)
+			if err != nil {
+				return err
+			}
+			err = encoder.Encode(obj.CollectionDetails)
+			if err != nil {
+				return err
+			}
+		}
+	}
+	return nil
+}
+
+func (obj *CreateMetadataAccountArgsV3) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `Data`:
+	err = decoder.Decode(&obj.Data)
+	if err != nil {
+		return err
+	}
+	// Deserialize `IsMutable`:
+	err = decoder.Decode(&obj.IsMutable)
+	if err != nil {
+		return err
+	}
+	// Deserialize `CollectionDetails` (optional):
+	{
+		ok, err := decoder.ReadBool()
+		if err != nil {
+			return err
+		}
+		if ok {
+			err = decoder.Decode(&obj.CollectionDetails)
+			if err != nil {
+				return err
+			}
+		}
+	}
+	return nil
+}
+
+
+type CollectionDetails interface {
+	isCollectionDetails()
+}
+
+type collectionDetailsContainer struct {
+	Enum ag_binary.BorshEnum `borsh_enum:"true"`
+	V1   CollectionDetailsV1
+	V2   CollectionDetailsV2
+}
+
+type CollectionDetailsV1 struct {
+	Size uint64
+}
+
+func (obj CollectionDetailsV1) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `Size` param:
+	err = encoder.Encode(obj.Size)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *CollectionDetailsV1) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `Size`:
+	err = decoder.Decode(&obj.Size)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (_ *CollectionDetailsV1) isCollectionDetails() {}
+
+type CollectionDetailsV2 struct {
+	Padding [8]uint8
+}
+
+func (obj CollectionDetailsV2) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `Padding` param:
+	err = encoder.Encode(obj.Padding)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *CollectionDetailsV2) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `Padding`:
+	err = decoder.Decode(&obj.Padding)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (_ *CollectionDetailsV2) isCollectionDetails() {}

@@ -110,7 +110,7 @@ const (
 	// Register a Metadata as a Master Edition V2, which means Edition V2s can be minted.
 	// Henceforth, no further tokens will be mintable from this primary mint. Will throw an error if more than one
 	// token exists, and will throw an error if less than one token exists in this primary mint.
-	Instruction_CreateMasterEditionV3
+	Instruction_CreateMasterEditionV3 = iota + 17
 
 	// If a MetadataAccount Has a Collection allow the UpdateAuthority of the Collection to Verify the NFT Belongs in the Collection
 	Instruction_VerifyCollection
@@ -134,6 +134,8 @@ const (
 	// Revoke account to call [verify_collection] on this NFT
 	Instruction_RevokeCollectionAuthority
 )
+
+var Instruction_CreateMetadataAccountV3 = ag_binary.TypeID([8]byte{43, 12, 175, 14, 252, 45, 188, 155})
 
 // InstructionIDToName returns the name of the instruction given its ID.
 func InstructionIDToName(id uint8) string {
@@ -188,6 +190,8 @@ func InstructionIDToName(id uint8) string {
 		return "ApproveCollectionAuthority"
 	case Instruction_RevokeCollectionAuthority:
 		return "RevokeCollectionAuthority"
+	case Instruction_CreateMetadataAccountV3.Uint8():
+		return "CreateMetadataAccountV3"
 	default:
 		return ""
 	}
@@ -259,6 +263,7 @@ var InstructionImplDef = ag_binary.NewVariantDefinition(
 		{
 			"CreateMetadataAccountV2", (*CreateMetadataAccountV2)(nil),
 		},
+		
 		{
 			"CreateMasterEditionV3", (*CreateMasterEditionV3)(nil),
 		},
